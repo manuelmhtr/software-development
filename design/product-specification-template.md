@@ -1,4 +1,4 @@
-# PS-0000: <Short title here>
+# PS-0000: \<Short title here>
 
 ## Objective
 What do you want to achieve with this?

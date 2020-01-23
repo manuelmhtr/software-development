@@ -7,6 +7,7 @@ I think much of this learning could be useful for other technical leaders and st
 ## Index
 
 1. [Design](/design)
-   i. [Product specification template](/design/product specification template.md)
+   1. [Product specification template](/design/product-specification-template.md)
+   2. [Rules to achieve greate product specifications](/design/rules-for-great-product-specifications.md)
 2. [Development](/development)
-   i. [Git flow](/development/git-flow.md)
+   1. [Git flow](/development/git-flow.md)
