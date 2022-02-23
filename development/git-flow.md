@@ -1,5 +1,18 @@
 # Git Flow
 
+## TL; DR
+
+Use 3 kind of branches:
+
+|Branch kind|Naming|Integration strategy|Forced pushes?|
+|-----------|------|--------------------|--------------|
+|Stable|A fixed name. Eg. `main`, `master`, `dev`, `staging`|No fast forward merge (`git merge --no-ff`)|No. Forbidden.|
+|Epic|A short, feature related name. Eg. `signup`, `feature-x`, `add-cache`|Regular rebase (`git rebase`)|No|
+|Task|Ticket ID + task related name. Eg. `VF1234-endpoint`, `#123456-fix-x-bug`|Squashed rebase (`git rebase -i`)|Yes. Encouraged.|
+
+
+## Intro
+
 This guide explains the best process I've found to to develop projects using git. The process is based on [Git Flow by Vincent Driessen](http://nvie.com/posts/a-successful-git-branching-model/):
 
 ![Git Flow](/assets/gitflow-model.png)
