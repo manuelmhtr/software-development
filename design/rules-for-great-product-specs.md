@@ -1,4 +1,4 @@
-# Rules for great Product Spefics
+# Rules for great Product Specs
 
 Rules to achieve great Product Specs (PS / PRDs):
 - The PS must be initially written by the person who knows the most about the product (owner).
