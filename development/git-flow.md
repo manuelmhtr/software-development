@@ -6,10 +6,19 @@ Use 3 kind of branches:
 
 |Branch kind|Naming|Integration strategy|Forced pushes?|
 |-----------|------|--------------------|--------------|
-|Stable|A fixed name. Eg. `main`, `master`, `dev`, `staging`|No fast forward merge (`git merge --no-ff`)|No. Forbidden.|
-|Epic|A short, feature related name. Eg. `signup`, `feature-x`, `add-cache`|Regular rebase (`git rebase`)|No|
-|Task|Ticket ID + task related name. Eg. `VF1234-endpoint`, `#123456-fix-x-bug`|Squashed rebase (`git rebase -i`)|Yes. Encouraged.|
+|Stable|A fixed name. Eg. `main`, `master`, `dev`, `staging`.|Merge (`git rebase`).|No. Forbidden.|
+|Epic|A short, feature related name. Eg. `signup`, `feature-x`, `add-cache`.|First rebase (`git rebase`) the stable branch (eg. `dev`), then merge to stable branch using _"no fast forward"_ option (`git merge --no-ff`).|Yes: when rebasing stable branches.|
+|Task|Ticket ID + task related name. Eg. `VF1234-endpoint`, `#123456-fix-x-bug`.|Squashed rebase (`git rebase -i`), then merge to either epic or stable branch.|Yes: before integration or when integrating changes.|
 
+## Cheat sheet
+
+**Squashed rebase**
+
+1. `git rebase -i`
+2. This command will open a vim edit will all commits being rebased. Press `i`to start editing.
+3. Leave `pick` in the first commit, change `pick` to `f` (fixup) in the rest.
+4. Press `Esc` to exit editing mode.
+5. Type `:wq` to save changes and leave vim.
 
 ## Intro
 
