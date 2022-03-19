@@ -14,5 +14,6 @@ I think much of this learning could be useful for other technical leaders and st
 
 ## Tools
 
+* [ASCII diagrams](https://dot-to-ascii.ggerganov.com/)
 * [Code to image](https://carbon.now.sh/)
 * [Sequence diagrams](https://swimlanes.io/)
