@@ -92,6 +92,50 @@ If it's updated, then continue. If there are new changes on the base branch, [re
 
 Finally, create a Pull request on Github / Gitlab or any repositories manager you use.
 
+### 4. Squash and merge
+
+Once the peer request is done and fixed any issues, [rebase and squash](#squashing) all of your commits into one:
+
+```mermaid
+%%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
+gitGraph
+  commit id: "Feature A"
+  commit id: "Feature B"
+  commit id: "Feature C"
+  commit id: "Feature D"
+  branch task-1
+  commit id: "Feature: User model"
+```
+
+Finally merge the `task-1` branch into the branch you first checked out from.
+
+```sh
+# Checkout base branch
+git checkout <base_branch>
+
+# Merge changes
+git merge <task_branch>
+```
+
+Example:
+
+```sh
+git checkout dev
+git merge task-1
+```
+
+If you followed the process correctly the git history will look linear, with you task contained in a single commit:
+
+```mermaid
+%%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
+gitGraph
+  commit id: "Feature A"
+  commit id: "Feature B"
+  commit id: "Feature C"
+  commit id: "Feature D"
+  commit id: "Feature: User model"
+```
+
 ## Rebasing
 
 Let's say you need to update the branch `task-1` with the latest changes from `dev`. It looks like:
@@ -99,15 +143,15 @@ Let's say you need to update the branch `task-1` with the latest changes from `d
 ```mermaid
 %%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
 gitGraph
-  commit id: "Feature 1"
-  commit id: "Feature 2"
+  commit id: "Feature A"
+  commit id: "Feature B"
   branch task-1
   commit id: "Feature: User model"
   commit id: "Migrations"
   commit id: "Tests"
   checkout dev
-  commit id: "Feature 3"
-  commit id: "Feature 4"
+  commit id: "Feature C"
+  commit id: "Feature D"
 ```
 
 Then run the following command:
@@ -127,10 +171,10 @@ This will move the `task-1` branch to the end of `dev`, including all of its cha
 ```mermaid
 %%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
 gitGraph
-  commit id: "Feature 1"
-  commit id: "Feature 2"
-  commit id: "Feature 3"
-  commit id: "Feature 4"
+  commit id: "Feature A"
+  commit id: "Feature B"
+  commit id: "Feature C"
+  commit id: "Feature D"
   branch task-1
   commit id: "Feature: User model"
   commit id: "Migrations"
@@ -143,7 +187,7 @@ If you think you f\*cked up while solving conflicts, run `git rebase --abort` to
 
 [More info about rebasing here](https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase)
 
-## Squahing
+## Squashing
 
 Squasing is very similar to [rebasing](#rebasing) except it adds one more step.
 
@@ -152,15 +196,15 @@ Let's say you need to update the branch `task-1` with the latest changes from `d
 ```mermaid
 %%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
 gitGraph
-  commit id: "Feature 1"
-  commit id: "Feature 2"
+  commit id: "Feature A"
+  commit id: "Feature B"
   branch task-1
   commit id: "Feature: User model"
   commit id: "Migrations"
   commit id: "Tests"
   checkout dev
-  commit id: "Feature 3"
-  commit id: "Feature 4"
+  commit id: "Feature C"
+  commit id: "Feature D"
 ```
 
 Then run the following command (it adds the option `-i` for "interactive"):
@@ -219,10 +263,10 @@ Once the rebase and squash is finished, the branch should look like:
 ```mermaid
 %%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
 gitGraph
-  commit id: "Feature 1"
-  commit id: "Feature 2"
-  commit id: "Feature 3"
-  commit id: "Feature 4"
+  commit id: "Feature A"
+  commit id: "Feature B"
+  commit id: "Feature C"
+  commit id: "Feature D"
   branch task-1
   commit id: "Feature: User model"
 ```
