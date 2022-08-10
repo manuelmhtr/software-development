@@ -10,7 +10,7 @@ I think much of this learning could be useful for other technical leaders and st
    1. [Product specification template](/design/product-specification-template.md)
    2. [Rules for great product specs](/design/rules-for-great-product-specs.md)
 2. [Development](/development)
-   1. [Git flow](/development/git-flow.md)
+   1. [Git flow](/development/git-flow-v2.md)
 
 ## Tools
 
