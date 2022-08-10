@@ -5,27 +5,27 @@
 There are 3 kind of banches:
 
 * **👑 Stable**
-  * There are always only 2: `main` and `dev`.
+  * There are always only 2: `main` and `staging`.
   * No forced pushes allowed.
-  * `dev` is developer's main branch. It must no contain bugs, it can be pushed to production anytime.
+  * `staging` is developer's main branch. It must no contain bugs, it can be pushed to production anytime.
   * `main` acts as a pointer to deploy code to production.
 * **🚧 Epic**
   * There are as many as concurrent epic the team is working on.
   * They have a short and easy to remember name. Eg `signup`, `feature-x`, `add-cache`.
   * Forced pushes are allowed.
   * Squash is forbidden.
-  * Deleted after the epic is integrated to `dev`.
+  * Deleted after the epic is integrated to `staging`.
 * **🛠 Task**
   * There are as many as needed.
   * Name is composed by its _ticket ID_, plus optionally the _task name_. Eg. `JIRA-1234`, `asana-5678-endpoint`.
   * Forced pushes are allowed.
-  * Deleted after the task is integrated to `dev` or an `epic` branch.
+  * Deleted after the task is integrated to `staging` or an `epic` branch.
   * Squash is required before merging.
   * These are **the only branches that require a peer review** 🔍.
 
 | Branch kind | Naming | Forced pushes? | Squasing? | Peer review? |
 |-------------|--------|----------------|-----------|--------------|
-| Stable | `main` and `dev` | ❌ | ❌ | ❌ |
+| Stable | `main` and `staging` | ❌ | ❌ | ❌ |
 | Epic | `[short-and-rememberable]` | ✅ | ❌ | ❌ |
 | Task | `[ticket id] + [task name]` | ✅ | ✅ | ✅ |
 
@@ -35,7 +35,7 @@ There are 3 kind of banches:
 
 * **Is this a hotfix?** Checkout from `main`.
 * **The task belongs to an epic?** Checkout from its `epic` branch.
-* **Is this a standalone task?** Checkout from `dev`.
+* **Is this a standalone task?** Checkout from `staging`.
 
 ```sh
 # Make sure you have the latest changes
@@ -86,7 +86,7 @@ Code and commit the times you need.
 
 ### 3. Send to peer review
 
-First, make sure your branch is updated with the branch you checked out from (`dev`, `main` or an epic branch).
+First, make sure your branch is updated with the branch you checked out from (`staging`, `main` or an epic branch).
 
 If it's updated, then continue. If there are new changes on the base branch, [rebase your branch](#rebasing) to include them.
 
@@ -140,7 +140,7 @@ gitGraph
 
 ### 1. Checkout the branch
 
-Checkout a new branch from `dev` with a short and rememberable name. Eg. `sign-in`.
+Checkout a new branch from `staging` with a short and rememberable name. Eg. `sign-in`.
 
 ### 2. Code all tasks
 
@@ -182,7 +182,7 @@ gitGraph
 
 ### 3. Update and test it
 
-After all the tasks of the epic are finished, its time to include all the new changes available in the base branch (`dev`). To do that, it's necessary to [rebase](#rebasing) `dev`:
+After all the tasks of the epic are finished, its time to include all the new changes available in the base branch (`staging`). To do that, it's necessary to [rebase](#rebasing) `staging`:
 
 ```mermaid
 %%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
@@ -197,11 +197,11 @@ gitGraph
   commit id: "Task 3"
 ```
 
-The most important rule of `dev` is, it can not containg bugs. Therefore, this branch must pass QA validations before mergining it.
+The most important rule of `staging` is, it can not containg bugs. Therefore, this branch must pass QA validations before mergining it.
 
 ### 4. Merge it
 
-Since the epic branch rebased `dev` already and squashes are forbidden on epic branches to keep track of all the tasks that composed the epic, then we'll use `merge`, however it's better to use the "No fast forward" option (`--no-ff`) to create a new empty commit and be able to know when the epic started and when it finished in the git history.
+Since the epic branch rebased `staging` already and squashes are forbidden on epic branches to keep track of all the tasks that composed the epic, then we'll use `merge`, however it's better to use the "No fast forward" option (`--no-ff`) to create a new empty commit and be able to know when the epic started and when it finished in the git history.
 
 ```sh
 # Checkout base branch
@@ -239,9 +239,9 @@ gitGraph
 
 ## Deploying to production
 
-We know `dev` contains no bugs and it's ready to be deployed to production.
+We know `staging` contains no bugs and it's ready to be deployed to production.
 
-Then, we only need to checkout `main` and make a simple `merge` to `dev`:
+Then, we only need to checkout `main` and make a simple `merge` to `staging`:
 
 ```sh
 # Checkout main
@@ -251,11 +251,11 @@ git checkout main
 git merge dev
 ```
 
-This, will join `main` and `dev` in the same commit. No need to use `--no-ff` option.
+This, will join `main` and `staging` in the same commit. No need to use `--no-ff` option.
 
 ## Rebasing
 
-Let's say you need to update the branch `task-1` with the latest changes from `dev`. It looks like:
+Let's say you need to update the branch `task-1` with the latest changes from `staging`. It looks like:
 
 ```mermaid
 %%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
@@ -283,7 +283,7 @@ Example
 git rebase dev
 ```
 
-This will move the `task-1` branch to the end of `dev`, including all of its changes:
+This will move the `task-1` branch to the end of `staging`, including all of its changes:
 
 ```mermaid
 %%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
@@ -298,7 +298,7 @@ gitGraph
   commit id: "Tests"
 ```
 
-If there were conflicts while `task-1` rebases `dev` an error message will appear and the rebase will be paused. It's normal, just fix the conflicts, stage the changes and run `git rebase --continue`. Each commit is rebased individually, you might have to repeat this process (up to once per commit).
+If there were conflicts while `task-1` rebases `staging` an error message will appear and the rebase will be paused. It's normal, just fix the conflicts, stage the changes and run `git rebase --continue`. Each commit is rebased individually, you might have to repeat this process (up to once per commit).
 
 If you think you f\*cked up while solving conflicts, run `git rebase --abort` to stop the rebase.
 
@@ -308,7 +308,7 @@ If you think you f\*cked up while solving conflicts, run `git rebase --abort` to
 
 Squasing is very similar to [rebasing](#rebasing) except it adds one more step.
 
-Let's say you need to update the branch `task-1` with the latest changes from `dev` and squash all of the commits into one. It looks like:
+Let's say you need to update the branch `task-1` with the latest changes from `staging` and squash all of the commits into one. It looks like:
 
 ```mermaid
 %%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
