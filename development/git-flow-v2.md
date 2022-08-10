@@ -136,6 +136,123 @@ gitGraph
   commit id: "Feature: User model"
 ```
 
+## Building an epic
+
+### 1. Checkout the branch
+
+Checkout a new branch from `dev` with a short and rememberable name. Eg. `sign-in`.
+
+### 2. Code all tasks
+
+Each new task, will follow its own individual ["Coding a task"](#coding-a-task) process. Each task may be composed of multiple commits, but before merging to the epic branch they must pass a peer review and be [squashed](#squashing).
+
+Working on a new task (`task-3`):
+
+```mermaid
+%%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
+gitGraph
+  commit id: "Feature 1"
+  commit id: "Feature 2"
+  branch epic-1
+  commit id: "Task 1"
+  commit id: "Task 2"
+  branch task-3
+  commit id: "Task 3, first commit"
+  commit id: "Task 3, WIP"
+  checkout dev
+  commit id: "Feature 3"
+  commit id: "Feature 4"
+```
+
+And then merging it as a squashed commit:
+
+```mermaid
+%%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
+gitGraph
+  commit id: "Feature 1"
+  commit id: "Feature 2"
+  branch epic-1
+  commit id: "Task 1"
+  commit id: "Task 2"
+  commit id: "Task 3"
+  checkout dev
+  commit id: "Feature 3"
+  commit id: "Feature 4"
+```
+
+### 3. Update and test it
+
+After all the tasks of the epic are finished, its time to include all the new changes available in the base branch (`dev`). To do that, it's necessary to [rebase](#rebasing) `dev`:
+
+```mermaid
+%%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
+gitGraph
+  commit id: "Feature 1"
+  commit id: "Feature 2"
+  commit id: "Feature 3"
+  commit id: "Feature 4"
+  branch epic-1
+  commit id: "Task 1"
+  commit id: "Task 2"
+  commit id: "Task 3"
+```
+
+The most important rule of `dev` is, it can not containg bugs. Therefore, this branch must pass QA validations before mergining it.
+
+### 4. Merge it
+
+Since the epic branch rebased `dev` already and squashes are forbidden on epic branches to keep track of all the tasks that composed the epic, then we'll use `merge`, however it's better to use the "No fast forward" option (`--no-ff`) to create a new empty commit and be able to know when the epic started and when it finished in the git history.
+
+```sh
+# Checkout base branch
+git checkout <base_branch>
+
+# Merge changes
+git merge --no-ff <epic_branch>
+```
+
+Example:
+
+```sh
+git checkout dev
+git merge --no-ff epic-1
+```
+
+A good description for the empty commit is: `Epic: [Short description of the epic]`.
+
+If you followed the process correctly, a merged epic would look like:
+
+```mermaid
+%%{init: { 'gitGraph': { 'mainBranchName': 'dev' } } }%%
+gitGraph
+  commit id: "Feature 1"
+  commit id: "Feature 2"
+  commit id: "Feature 3"
+  commit id: "Feature 4"
+  branch epic-1
+  commit id: "Task 1"
+  commit id: "Task 2"
+  commit id: "Task 3"
+  checkout dev
+  merge epic-1
+```
+
+## Deploying to production
+
+We know `dev` contains no bugs and it's ready to be deployed to production.
+
+Then, we only need to checkout `main` and make a simple `merge` to `dev`:
+
+```sh
+# Checkout main
+git checkout main
+
+# Merge changes to dev
+git merge dev
+```
+
+This, will join `main` and `dev` in the same commit. No need to use `--no-ff` option.
+
 ## Rebasing
 
 Let's say you need to update the branch `task-1` with the latest changes from `dev`. It looks like:
